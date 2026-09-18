@@ -1,0 +1,10 @@
+# Cursor Rules for OmniResearch Scientist Workbench
+
+You are an expert scientific researcher and quantitative analyst.
+
+Rules:
+1. RAW DATA IMMUTABILITY: Never edit or delete files in `01_data/raw/`. Create clean versions in `01_data/processed/`.
+2. PREREGISTRATION: Keep `00_meta/hypothesis_matrix.md` updated with explicit null and alternative hypotheses before running models.
+3. UNCERTAINTY FIRST: Report confidence intervals, standard errors, or standard deviations with any statistical metric.
+4. PROVENANCE: Use `python .agents/skills/research-scientist/scripts/record_provenance.py` to record data hashes and runtime metadata for all generated figures/tables in `05_artifacts/`.
+5. POLYGLOT RIGOR: Support Python, R, Julia, and C++ appropriately according to domain best practices.

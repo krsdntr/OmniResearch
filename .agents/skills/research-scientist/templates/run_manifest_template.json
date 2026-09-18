@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OmniResearch Artifact Provenance Manifest",
+  "version": "1.0.0",
+  "records": [
+    {
+      "artifact_id": "fig_01_treatment_effect_distribution.pdf",
+      "artifact_path": "05_artifacts/figures/fig_01_treatment_effect_distribution.pdf",
+      "artifact_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "timestamp_utc": "2026-09-18T15:00:00Z",
+      "source_script": "03_src/python/plot_treatment_effects.py",
+      "script_sha256": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+      "input_datasets": [
+        {
+          "path": "01_data/processed/clean_trial_data.parquet",
+          "sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"
+        }
+      ],
+      "parameters": {
+        "confidence_level": 0.95,
+        "bootstrap_replicates": 2000,
+        "seed": 42
+      },
+      "environment": {
+        "os": "Windows",
+        "os_release": "10.0.22631",
+        "machine": "AMD64",
+        "python_version": "3.12.2"
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+# Research Project Git Ignore
+# Ignore large/raw data files
+01_data/raw/*
+!01_data/raw/.gitkeep
+01_data/interim/*
+!01_data/interim/.gitkeep
+01_data/processed/*
+!01_data/processed/.gitkeep
+
+# Ignore large binary artifacts/models
+*.pt
+*.onnx
+*.pkl
+*.h5
+*.parquet
+*.tar.gz
+*.zip
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+env/
+.pytest_cache/
+
+# R
+.Rhistory
+.RData
+.Rproj.user/
+
+# Julia
+Manifest.toml
+
+# OS Files
+.DS_Store
+Thumbs.db
