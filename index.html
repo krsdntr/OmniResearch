@@ -1569,6 +1569,7 @@
 
       <ul class="nav-menu">
         <li class="nav-item"><a href="#guardrails">Guardrails</a></li>
+        <li class="nav-item"><a href="#pillars">5 Pillars</a></li>
         <li class="nav-item"><a href="#scaffolding">FAIR Tree</a></li>
         <li class="nav-item"><a href="#simulator">Simulator</a></li>
         <li class="nav-item"><a href="#paradigms">5 Paradigms</a></li>
@@ -1606,9 +1607,9 @@
               <span class="status-dot"></span>
               CI: Multi-Platform Passing
             </span>
-            <span class="status-pill">v1.0.0 Stable</span>
+            <span class="status-pill">v1.1.0 Institutional Standard</span>
             <span class="status-pill">FAIR Data L3</span>
-            <span class="status-pill">Zero Hallucinations</span>
+            <span class="status-pill">5 Pillars of Rigor</span>
           </div>
 
           <h1 class="hero-h1">
@@ -1761,6 +1762,115 @@
             Every plot and table is cryptographically bonded to the raw inputs, transformation script, seed, and OS specs in <code>05_artifacts/provenance/manifest.json</code>.
           </p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       THE 5 PILLARS OF INSTITUTIONAL RIGOR (V1.1)
+  ============================================================= -->
+  <section class="section" id="pillars" style="background: var(--bg-canvas); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Institutional Standards (v1.1)</span>
+        <h2 class="section-title">The 5 Pillars of Scientific Rigor</h2>
+        <p class="section-desc">
+          Bridging advanced autonomous LLM capabilities with the uncompromising methodological protocols of Nature, Science, and institutional review boards.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem;">
+        
+        <!-- Pillar 1: Human-in-the-Loop -->
+        <div class="tech-box" style="padding: 1.35rem; display: flex; flex-direction: column; justify-content: space-between;">
+          <div class="corner-cross cross-tl"></div><div class="corner-cross cross-br"></div>
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+              <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); font-weight: 700;">PILLAR 01 // HUMAN-IN-THE-LOOP</span>
+              <span style="font-family: var(--font-mono); font-size: 0.7rem; background: var(--accent-subtle); color: var(--accent); padding: 0.15rem 0.45rem; border-radius: 3px; border: 1px solid var(--accent-border);">gate_check.py</span>
+            </div>
+            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Approval Gates &amp; Digital Signatures</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 1rem;">
+              Prevents AI agent from running wild. Automatically blocks raw data access and statistical model execution until a human researcher reviews and signs cryptographic preregistration checkpoints in <code>00_meta/</code>.
+            </p>
+          </div>
+          <div style="background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 4px; padding: 0.55rem 0.75rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--syntax-string);">
+            <span style="color: var(--text-muted);">$</span> python gate_check.py lock --gate hypothesis-lock
+          </div>
+        </div>
+
+        <!-- Pillar 2: Auto-Appendix -->
+        <div class="tech-box" style="padding: 1.35rem; display: flex; flex-direction: column; justify-content: space-between;">
+          <div class="corner-cross cross-tl"></div><div class="corner-cross cross-br"></div>
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+              <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); font-weight: 700;">PILLAR 02 // PUBLICATION READY</span>
+              <span style="font-family: var(--font-mono); font-size: 0.7rem; background: var(--success-subtle); color: var(--success); padding: 0.15rem 0.45rem; border-radius: 3px; border: 1px solid var(--success-border);">generate_appendix.py</span>
+            </div>
+            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Auto-Appendix for Journals</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 1rem;">
+              Eliminates days of manual supplementary documentation writing. 1-click automatic compilation of Nature/Science-ready LaTeX (<code>booktabs</code>) and Markdown appendices directly from cryptographic lineage manifests.
+            </p>
+          </div>
+          <div style="background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 4px; padding: 0.55rem 0.75rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--syntax-string);">
+            <span style="color: var(--text-muted);">$</span> python generate_appendix.py --project . --format all
+          </div>
+        </div>
+
+        <!-- Pillar 3: Data Leakage Scanner -->
+        <div class="tech-box" style="padding: 1.35rem; display: flex; flex-direction: column; justify-content: space-between;">
+          <div class="corner-cross cross-tl"></div><div class="corner-cross cross-br"></div>
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+              <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); font-weight: 700;">PILLAR 03 // PRE-EXECUTION AUDIT</span>
+              <span style="font-family: var(--font-mono); font-size: 0.7rem; background: var(--accent-subtle); color: var(--accent); padding: 0.15rem 0.45rem; border-radius: 3px; border: 1px solid var(--accent-border);">scan_leakage.py</span>
+            </div>
+            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Real-time Data Leakage Scanner</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 1rem;">
+              Static code analysis powered by Python Abstract Syntax Trees (AST). Automatically intercepts pre-split transformations (e.g. <code>StandardScaler.fit()</code> prior to split) and temporal shuffle leaks before execution.
+            </p>
+          </div>
+          <div style="background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 4px; padding: 0.55rem 0.75rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--syntax-string);">
+            <span style="color: var(--text-muted);">$</span> python scan_leakage.py 03_src/python --strict
+          </div>
+        </div>
+
+        <!-- Pillar 4: Big Data Merkle Hashing -->
+        <div class="tech-box" style="padding: 1.35rem; display: flex; flex-direction: column; justify-content: space-between;">
+          <div class="corner-cross cross-tl"></div><div class="corner-cross cross-br"></div>
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+              <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); font-weight: 700;">PILLAR 04 // BIG DATA SCALE</span>
+              <span style="font-family: var(--font-mono); font-size: 0.7rem; background: var(--accent-subtle); color: var(--accent); padding: 0.15rem 0.45rem; border-radius: 3px; border: 1px solid var(--accent-border);">record_provenance.py</span>
+            </div>
+            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Streaming Buffers &amp; Merkle Trees</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 1rem;">
+              Optimized for gigabyte to terabyte-scale scientific datasets (genomics, radio astronomy). Uses 8MB memory-mapped streaming buffers and 64MB chunked Merkle Tree roots for instantaneous cryptographic verification.
+            </p>
+          </div>
+          <div style="background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 4px; padding: 0.55rem 0.75rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--syntax-string);">
+            <span style="color: var(--text-muted);">$</span> python record_provenance.py --verify --manifest ...
+          </div>
+        </div>
+
+        <!-- Pillar 5: Adversarial Reviewer 2 -->
+        <div class="tech-box" style="padding: 1.35rem; display: flex; flex-direction: column; justify-content: space-between;">
+          <div class="corner-cross cross-tl"></div><div class="corner-cross cross-br"></div>
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+              <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); font-weight: 700;">PILLAR 05 // ANTI-SYCOPHANCY</span>
+              <span style="font-family: var(--font-mono); font-size: 0.7rem; background: var(--warning-subtle); color: var(--warning); padding: 0.15rem 0.45rem; border-radius: 3px; border: 1px solid rgba(154, 103, 0, 0.3);">Reviewer 2 Protocol</span>
+            </div>
+            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Adversarial Anti-Bias Auditing</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 1rem;">
+              Destroys AI confirmation bias. Automatically deploys a hostile adversarial reviewer agent to attack claims via marginal p-value checks ($0.01 \le p < 0.05$), 5% outlier trimming, and 1,000-permutation placebo tests.
+            </p>
+          </div>
+          <div style="background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 4px; padding: 0.55rem 0.75rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--syntax-string);">
+            <span style="color: var(--text-muted);">&gt;</span> 00_meta/adversarial_audit.md [5 Attack Vectors Checked]
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
