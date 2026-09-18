@@ -1,0 +1,2590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>OmniResearch — Autonomous Scientific Research Workbench for AI Agents</title>
+  <meta name="description" content="Universal high-rigor scientific research skill for AI coding agents. Enforces raw data immutability, preregistered hypothesis matrices, polyglot pipelines, and SHA-256 cryptographic provenance receipts.">
+
+  <style>
+    /* -------------------------------------------------------------
+       PRECISION SCIENTIFIC DESIGN SYSTEM
+       Aesthetic: High-precision engineering & academic laboratory.
+       Strictly No AI Slop: No rainbow gradients, no 30px blurry shadows,
+       no excessive rounded bubbles. Crisp hairline grids, CAD crosshairs,
+       technical typography, and authentic terminal instrumentation.
+    ------------------------------------------------------------- */
+    :root {
+      --bg: #ffffff;
+      --bg-canvas: #fbfbfd;
+      --bg-subtle: #f6f8fa;
+      --bg-muted: #eef2f6;
+      --border: #e1e4e8;
+      --border-dark: #d0d7de;
+      --border-focus: #0969da;
+      
+      --text: #1f2328;
+      --text-secondary: #57606a;
+      --text-muted: #6e7781;
+      
+      --accent: #0969da;
+      --accent-hover: #0756b3;
+      --accent-subtle: #ddf4ff;
+      --accent-border: #54aeff;
+      
+      --code-bg: #0d1117;
+      --code-header: #161b22;
+      --code-border: #30363d;
+      --code-text: #e6edf3;
+      
+      --syntax-keyword: #ff7b72;
+      --syntax-string: #a5d6ff;
+      --syntax-number: #79c0ff;
+      --syntax-key: #7ee787;
+      --syntax-comment: #8b949e;
+      
+      --success: #1a7f37;
+      --success-subtle: #dafbe1;
+      --success-border: #4ac26b;
+      
+      --warning: #9a6700;
+      --warning-subtle: #fff8c5;
+      
+      --grid-dot: #d0d7de;
+      --crosshair: #8c959f;
+      
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+      --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Segoe UI Mono", Menlo, Consolas, monospace;
+      
+      --container-width: 1140px;
+      --radius: 4px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0a0c10;
+      --bg-canvas: #0e1117;
+      --bg-subtle: #161b22;
+      --bg-muted: #21262d;
+      --border: #2b313a;
+      --border-dark: #373e48;
+      --border-focus: #58a6ff;
+      
+      --text: #f0f6fc;
+      --text-secondary: #8b949e;
+      --text-muted: #6e7681;
+      
+      --accent: #58a6ff;
+      --accent-hover: #79b8ff;
+      --accent-subtle: #12283e;
+      --accent-border: #1f426e;
+      
+      --code-bg: #0d1117;
+      --code-header: #161b22;
+      --code-border: #30363d;
+      --code-text: #e6edf3;
+      
+      --success: #3fb950;
+      --success-subtle: #12281a;
+      --success-border: #238636;
+      
+      --warning: #d29922;
+      --warning-subtle: #2d2208;
+      
+      --grid-dot: #21262d;
+      --crosshair: #484f58;
+    }
+
+    /* -------------------------------------------------------------
+       BASE RESETS & OVERFLOW HYGIENE
+    ------------------------------------------------------------- */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden; /* Prevent horizontal scrollbars on entire page */
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.15s ease, color 0.15s ease;
+      position: relative;
+    }
+
+    /* Word wrap & text containment */
+    p, h1, h2, h3, h4, span, li, td, th {
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+
+    code, pre {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    /* Subtle blueprint dot-grid */
+    .bg-grid {
+      background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* -------------------------------------------------------------
+       CUSTOM MINIMALIST SCROLLBARS (NON-INTRUSIVE)
+    ------------------------------------------------------------- */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-dark) transparent;
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-dark);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* -------------------------------------------------------------
+       LAYOUT CONTAINERS
+    ------------------------------------------------------------- */
+    .container {
+      width: 100%;
+      max-width: var(--container-width);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .section {
+      padding: 4.5rem 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .section-header {
+      margin-bottom: 2.5rem;
+      position: relative;
+    }
+
+    .section-header.center {
+      text-align: center;
+      max-width: 48rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .eyebrow::before {
+      content: "//";
+      opacity: 0.6;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-desc {
+      font-size: clamp(0.95rem, 2vw, 1.05rem);
+      color: var(--text-secondary);
+      max-width: 46rem;
+      line-height: 1.6;
+    }
+
+    /* Precision Technical Box with corner crosshairs */
+    .tech-box {
+      border: 1px solid var(--border);
+      background: var(--bg);
+      border-radius: var(--radius);
+      position: relative;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .corner-cross {
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      pointer-events: none;
+    }
+    .corner-cross::before, .corner-cross::after {
+      content: "";
+      position: absolute;
+      background: var(--crosshair);
+    }
+    .corner-cross::before { top: 4px; left: 0; width: 9px; height: 1px; }
+    .corner-cross::after { top: 0; left: 4px; width: 1px; height: 9px; }
+
+    .cross-tl { top: -5px; left: -5px; }
+    .cross-tr { top: -5px; right: -5px; }
+    .cross-bl { bottom: -5px; left: -5px; }
+    .cross-br { bottom: -5px; right: -5px; }
+
+    /* Hide corner crosshairs on mobile to prevent sub-pixel horizontal overflow */
+    @media (max-width: 768px) {
+      .corner-cross {
+        display: none;
+      }
+    }
+
+    /* -------------------------------------------------------------
+       NAVBAR (BULLETPROOF MOBILE)
+    ------------------------------------------------------------- */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      height: 56px;
+      width: 100%;
+    }
+
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      min-width: 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      flex-shrink: 0;
+    }
+
+    .brand-icon {
+      width: 24px;
+      height: 24px;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 3px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      list-style: none;
+    }
+
+    .nav-item a {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      transition: color 0.1s ease;
+    }
+    .nav-item a:hover {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-tools {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.38rem 0.75rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-dark);
+      background: var(--bg-subtle);
+      color: var(--text);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.12s ease;
+      white-space: nowrap;
+    }
+    .btn:hover {
+      background: var(--bg-muted);
+      border-color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    .theme-toggle {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .theme-toggle:hover {
+      color: var(--text);
+      background: var(--bg-subtle);
+    }
+
+    /* -------------------------------------------------------------
+       HERO SECTION WITH DUAL PANE & LIVE TERMINAL
+    ------------------------------------------------------------- */
+    .hero {
+      padding: 4.5rem 0 3.5rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .hero-status-pills {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .status-pill {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.2rem 0.55rem;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+    }
+
+    .status-pill.live {
+      color: var(--success);
+      border-color: var(--success-border);
+      background: var(--success-subtle);
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .hero-h1 {
+      font-size: clamp(1.75rem, 5vw, 2.9rem);
+      font-weight: 750;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+      word-break: break-word;
+    }
+
+    .hero-h1 span.highlight {
+      color: var(--accent);
+    }
+
+    .hero-lead {
+      font-size: clamp(0.95rem, 2.2vw, 1.08rem);
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+
+    /* Quick Install Block */
+    .quick-install {
+      border: 1px solid var(--border-dark);
+      background: var(--bg-subtle);
+      border-radius: var(--radius);
+      margin-bottom: 1.5rem;
+      width: 100%;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .quick-install-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding: 0.35rem 0.75rem;
+      background: var(--bg);
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .os-tabs {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .os-tab-btn {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: transparent;
+      border: 1px solid transparent;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .os-tab-btn.active {
+      color: var(--text);
+      background: var(--bg-subtle);
+      border-color: var(--border);
+    }
+
+    .quick-install-body {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.65rem 0.85rem;
+      gap: 0.75rem;
+      min-width: 0;
+      width: 100%;
+    }
+
+    .cmd-text {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text);
+      overflow-x: auto;
+      white-space: nowrap;
+      user-select: all;
+      flex: 1 1 auto;
+      min-width: 0;
+      scrollbar-width: none; /* Hide horizontal scrollbar inside small box */
+    }
+    .cmd-text::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cmd-copy-btn {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.6rem;
+      background: var(--bg);
+      border: 1px solid var(--border-dark);
+      border-radius: 3px;
+      color: var(--text);
+      cursor: pointer;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .cmd-copy-btn:hover {
+      background: var(--bg-muted);
+    }
+
+    .hero-features-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem 1.25rem;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    .hero-feat-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      min-width: 0;
+    }
+
+    .hero-feat-item svg {
+      width: 14px;
+      height: 14px;
+      color: var(--success);
+      flex-shrink: 0;
+    }
+
+    /* -------------------------------------------------------------
+       SIMULATED INTERACTIVE AGENT TERMINAL
+    ------------------------------------------------------------- */
+    .terminal-window {
+      border: 1px solid var(--code-border);
+      background: var(--code-bg);
+      border-radius: 6px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 420px;
+      width: 100%;
+      min-width: 0;
+    }
+
+    .terminal-titlebar {
+      background: var(--code-header);
+      padding: 0.6rem 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--code-border);
+      flex-shrink: 0;
+    }
+
+    .window-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .dot-red { background: #ff5f56; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green { background: #27c93f; }
+
+    .terminal-title {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #8b949e;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin: 0 0.5rem;
+    }
+
+    .terminal-playback-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-shrink: 0;
+    }
+
+    .playback-btn {
+      background: transparent;
+      border: 1px solid #30363d;
+      color: #8b949e;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .playback-btn:hover {
+      color: #fff;
+      border-color: #8b949e;
+    }
+
+    /* Terminal content with natural line wrapping & slim scrollbar */
+    .terminal-screen {
+      padding: 0.85rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      line-height: 1.5;
+      color: var(--code-text);
+      overflow-y: auto;
+      overflow-x: hidden;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: #30363d transparent;
+    }
+    .terminal-screen::-webkit-scrollbar {
+      width: 4px;
+    }
+    .terminal-screen::-webkit-scrollbar-thumb {
+      background: #30363d;
+      border-radius: 2px;
+    }
+
+    .term-line {
+      display: block; /* Blocks wrap naturally without grid or flex distortion */
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      opacity: 0;
+      transform: translateY(2px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .term-line.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .term-prompt-symbol { color: #58a6ff; font-weight: bold; }
+    .term-success { color: #7ee787; font-weight: bold; }
+    .term-accent { color: #79c0ff; }
+    .term-warn { color: #d29922; }
+    .term-hash { color: #ff7b72; word-break: break-all; }
+    .term-dim { color: #8b949e; }
+    .term-path { color: #e6edf3; background: #1f242c; padding: 0.1rem 0.3rem; border-radius: 2px; }
+
+    /* -------------------------------------------------------------
+       METRIC STRIP / STATS BAR
+    ------------------------------------------------------------- */
+    .metric-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      margin-top: 3.5rem;
+      width: 100%;
+      min-width: 0;
+    }
+
+    .metric-cell {
+      padding: 1.25rem 1.5rem;
+      border-right: 1px solid var(--border);
+      min-width: 0;
+    }
+    .metric-cell:last-child {
+      border-right: none;
+    }
+
+    .metric-val {
+      font-family: var(--font-mono);
+      font-size: 1.6rem;
+      font-weight: 750;
+      color: var(--text);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 0.25rem;
+    }
+
+    .metric-lbl {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* -------------------------------------------------------------
+       INTERACTIVE PROVENANCE SIMULATOR WIDGET
+    ------------------------------------------------------------- */
+    .simulator-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .simulator-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-width: 0;
+    }
+
+    .sim-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .sim-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+      word-break: break-all;
+    }
+
+    .sim-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 3px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .sim-input-group {
+      margin-bottom: 1rem;
+    }
+
+    .sim-label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 0.35rem;
+    }
+
+    .sim-textarea {
+      width: 100%;
+      height: 75px;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      padding: 0.5rem;
+      border: 1px solid var(--border-dark);
+      border-radius: 3px;
+      background: var(--bg-subtle);
+      color: var(--text);
+      resize: none;
+    }
+    .sim-textarea:focus {
+      outline: none;
+      border-color: var(--border-focus);
+    }
+
+    .hash-display-box {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 3px;
+      padding: 0.65rem 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #79c0ff;
+      word-break: break-all;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .hash-label {
+      font-size: 0.68rem;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .tamper-alert {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding: 0.6rem 0.85rem;
+      border-radius: 3px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-top: 0.75rem;
+      line-height: 1.45;
+    }
+    .tamper-alert svg {
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+    .tamper-alert.valid {
+      background: var(--success-subtle);
+      color: var(--success);
+      border: 1px solid var(--success-border);
+    }
+    .tamper-alert.invalid {
+      background: #ffebe9;
+      color: #cf222e;
+      border: 1px solid #ff8182;
+    }
+
+    /* -------------------------------------------------------------
+       SCIENTIFIC VISUAL SCHEMATIC (SVG DATAFLOW)
+    ------------------------------------------------------------- */
+    .schematic-wrapper {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-canvas);
+      padding: 1.5rem 1rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .schematic-svg {
+      width: 100%;
+      min-width: 680px; /* Ensures text inside SVG stays razor-sharp on mobile */
+      height: auto;
+      display: block;
+    }
+
+    /* -------------------------------------------------------------
+       FAIR SCAFFOLDING INTERACTIVE EXPLORER
+    ------------------------------------------------------------- */
+    .explorer-container {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    .tree-sidebar {
+      background: var(--bg-subtle);
+      border-right: 1px solid var(--border);
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+    }
+
+    .tree-node {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.45rem 0.65rem;
+      border-radius: 3px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      border: 1px solid transparent;
+      user-select: none;
+    }
+    .tree-node:hover {
+      background: var(--bg-muted);
+      color: var(--text);
+    }
+    .tree-node.active {
+      background: var(--bg);
+      color: var(--text);
+      font-weight: 600;
+      border-color: var(--border);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+
+    .tree-node-left {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .tree-badge {
+      font-size: 0.65rem;
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+    .badge-lock { background: #ffebe9; color: #cf222e; }
+    .badge-work { background: #ddf4ff; color: #0969da; }
+    .badge-out  { background: #dafbe1; color: #1a7f37; }
+
+    .explorer-pane {
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .pane-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-subtle);
+      border: 1px solid var(--accent-border);
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      display: inline-block;
+      margin-bottom: 0.75rem;
+      align-self: flex-start;
+    }
+
+    .pane-h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.65rem;
+    }
+
+    .pane-lead {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .pane-protocol-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1rem 1.25rem;
+    }
+
+    .pane-protocol-title {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 0.65rem;
+    }
+
+    .pane-protocol-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .pane-protocol-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      color: var(--text);
+    }
+    .pane-protocol-item svg {
+      width: 15px;
+      height: 15px;
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+
+    /* -------------------------------------------------------------
+       5 METHODOLOGICAL PARADIGMS (TABS & PROMPTS)
+    ------------------------------------------------------------- */
+    .tabs-bar {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+      gap: 0.25rem;
+      scrollbar-width: thin;
+    }
+
+    .paradigm-tab-btn {
+      padding: 0.65rem 0.9rem;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .paradigm-tab-btn:hover {
+      color: var(--text);
+    }
+    .paradigm-tab-btn.active {
+      color: var(--text);
+      border-bottom-color: var(--accent);
+    }
+
+    .paradigm-view {
+      display: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      padding: 1.5rem;
+      min-width: 0;
+    }
+    .paradigm-view.active {
+      display: block;
+    }
+
+    .pview-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .pview-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .pview-sub {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .pview-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      word-break: break-all;
+    }
+
+    .pview-content-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .pview-col {
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1.25rem;
+      background: var(--bg-subtle);
+      min-width: 0;
+    }
+
+    .pview-col-title {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 0.65rem;
+      letter-spacing: 0.05em;
+    }
+
+    .pview-col ul {
+      list-style-type: square;
+      padding-left: 1.15rem;
+      font-size: 0.85rem;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .pview-prompt-card {
+      border: 1px solid var(--code-border);
+      border-radius: 3px;
+      background: var(--code-bg);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-width: 0;
+    }
+
+    .pview-prompt-text {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: #e6edf3;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .prompt-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid #30363d;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* -------------------------------------------------------------
+       6 DATA HANDLERS (GRID)
+    ------------------------------------------------------------- */
+    .handlers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .hcard {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      background: var(--bg);
+      transition: border-color 0.12s ease;
+      min-width: 0;
+    }
+    .hcard:hover {
+      border-color: var(--border-dark);
+    }
+
+    .hcard-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.6rem;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .hcard-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .hcard-ext {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      background: var(--bg-muted);
+      padding: 0.15rem 0.45rem;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+
+    .hcard-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .hcard-spec {
+      font-size: 0.78rem;
+      color: var(--text);
+      font-family: var(--font-mono);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.65rem;
+      border-radius: 3px;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
+    /* -------------------------------------------------------------
+       PROVENANCE MANIFEST & SYNTAX HIGHLIGHTING
+    ------------------------------------------------------------- */
+    .manifest-dual {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .code-mock {
+      border: 1px solid var(--code-border);
+      background: var(--code-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .code-mock-header {
+      background: var(--code-header);
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #8b949e;
+      border-bottom: 1px solid var(--code-border);
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .code-mock pre {
+      padding: 1rem;
+      overflow-x: auto;
+      font-size: 0.76rem;
+      line-height: 1.5;
+      color: #e6edf3;
+      scrollbar-width: thin;
+    }
+
+    .syn-k { color: var(--syntax-key); }
+    .syn-s { color: var(--syntax-string); }
+    .syn-n { color: var(--syntax-number); }
+
+    /* -------------------------------------------------------------
+       PLATFORM INTEGRATION TABLE
+    ------------------------------------------------------------- */
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+    }
+
+    .clean-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      text-align: left;
+      min-width: 580px; /* Clean horizontal scroll without crushing table columns */
+    }
+
+    .clean-table th, .clean-table td {
+      padding: 0.85rem 1.15rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .clean-table th {
+      background: var(--bg-subtle);
+      font-weight: 700;
+      color: var(--text);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .clean-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* -------------------------------------------------------------
+       FOOTER & CITATION
+    ------------------------------------------------------------- */
+    .citation-box {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-subtle);
+      padding: 1.25rem;
+      margin-bottom: 3rem;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .citation-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      gap: 0.5rem;
+    }
+
+    .citation-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .footer {
+      padding: 2.5rem 0;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-nav {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    /* -------------------------------------------------------------
+       RESPONSIVE DESIGN (BREAKPOINTS)
+    ------------------------------------------------------------- */
+    @media (max-width: 960px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .metric-strip {
+        grid-template-columns: 1fr 1fr;
+      }
+      .metric-cell:nth-child(2) {
+        border-right: none;
+      }
+      .metric-cell:nth-child(3) {
+        border-top: 1px solid var(--border);
+      }
+      .metric-cell:nth-child(4) {
+        border-top: 1px solid var(--border);
+        border-right: none;
+      }
+      .explorer-container {
+        grid-template-columns: 1fr;
+      }
+      .tree-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .pview-content-grid {
+        grid-template-columns: 1fr;
+      }
+      .manifest-dual {
+        grid-template-columns: 1fr;
+      }
+      .simulator-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav-menu {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 0 1rem;
+      }
+      .section {
+        padding: 3rem 0;
+      }
+      .hero {
+        padding: 3rem 0 2.5rem;
+      }
+      .btn-github-text {
+        display: none; /* Hide long repo name on mobile navbar */
+      }
+      .metric-strip {
+        grid-template-columns: 1fr;
+      }
+      .metric-cell {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 1rem;
+      }
+      .metric-cell:last-child {
+        border-bottom: none;
+      }
+      .hero-features-list {
+        grid-template-columns: 1fr;
+      }
+      .terminal-window {
+        height: 360px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .container {
+        padding: 0 0.85rem;
+      }
+      .brand span {
+        font-size: 0.92rem;
+      }
+      .hero-h1 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body class="bg-grid">
+
+  <!-- =============================================================
+       STICKY NAVBAR
+  ============================================================= -->
+  <header class="navbar">
+    <div class="container">
+      <a href="#" class="brand">
+        <span class="brand-icon">Ω</span>
+        <span>OmniResearch</span>
+      </a>
+
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="#guardrails">Guardrails</a></li>
+        <li class="nav-item"><a href="#scaffolding">FAIR Tree</a></li>
+        <li class="nav-item"><a href="#simulator">Simulator</a></li>
+        <li class="nav-item"><a href="#paradigms">5 Paradigms</a></li>
+        <li class="nav-item"><a href="#handlers">Data Handlers</a></li>
+        <li class="nav-item"><a href="#platforms">Toolchains</a></li>
+      </ul>
+
+      <div class="nav-tools">
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light theme" title="Toggle theme">
+          <svg id="themeIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+        <a href="https://github.com/krsdntr/OmniResearch" target="_blank" rel="noopener noreferrer" class="btn" title="View GitHub Repository">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+          </svg>
+          <span class="btn-github-text">krsdntr/OmniResearch</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- =============================================================
+       HERO SECTION WITH DUAL PANE & LIVE TERMINAL
+  ============================================================= -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        
+        <!-- Left: Technical Premise & Quickstart -->
+        <div>
+          <div class="hero-status-pills">
+            <span class="status-pill live">
+              <span class="status-dot"></span>
+              CI: Multi-Platform Passing
+            </span>
+            <span class="status-pill">v1.0.0 Stable</span>
+            <span class="status-pill">FAIR Data L3</span>
+            <span class="status-pill">Zero Hallucinations</span>
+          </div>
+
+          <h1 class="hero-h1">
+            Turn Any AI Coding Agent into a <span class="highlight">Senior Quantitative Scientist</span>.
+          </h1>
+
+          <p class="hero-lead">
+            Eliminates p-hacking, raw data tampering, and fabricated figures. Equips Google Antigravity, Claude Code, Cursor, and Copilot with strict epistemological guardrails, preregistered hypothesis matrices, and cryptographic SHA-256 receipts.
+          </p>
+
+          <!-- Interactive One-Liner Box -->
+          <div class="quick-install">
+            <div class="quick-install-header">
+              <div class="os-tabs">
+                <button class="os-tab-btn active" onclick="setInstaller('bash', this)">macOS / Linux</button>
+                <button class="os-tab-btn" onclick="setInstaller('pwsh', this)">Windows PowerShell</button>
+              </div>
+              <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);">Global Skill Install</span>
+            </div>
+            <div class="quick-install-body">
+              <code class="cmd-text" id="installCmd">curl -fsSL https://raw.githubusercontent.com/krsdntr/OmniResearch/main/install.sh | bash</code>
+              <button class="cmd-copy-btn" onclick="copyInstallCmd(this)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copy</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Feature Bullets -->
+          <div class="hero-features-list">
+            <div class="hero-feat-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Raw Data Quarantine (Locked SHA-256)</span>
+            </div>
+            <div class="hero-feat-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Mandatory 95% Confidence Intervals</span>
+            </div>
+            <div class="hero-feat-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Polyglot: Python, R, Julia &amp; C++</span>
+            </div>
+            <div class="hero-feat-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Zero Dependencies (Pure stdlib tools)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Real-time Simulated Terminal -->
+        <div>
+          <div class="terminal-window">
+            <div class="terminal-titlebar">
+              <div class="window-controls">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+              </div>
+              <span class="terminal-title">antigravity@omniresearch: ~/clinical_study</span>
+              <div class="terminal-playback-controls">
+                <button class="playback-btn" id="replayBtn" onclick="restartTerminal()">Replay</button>
+              </div>
+            </div>
+
+            <div class="terminal-screen" id="termScreen">
+              <!-- Terminal Lines populated via JS simulation with clean wrapping -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Precision Metric Strip -->
+      <div class="metric-strip tech-box">
+        <div class="corner-cross cross-tl"></div>
+        <div class="corner-cross cross-tr"></div>
+        <div class="corner-cross cross-bl"></div>
+        <div class="corner-cross cross-br"></div>
+
+        <div class="metric-cell">
+          <div class="metric-val">100%</div>
+          <div class="metric-lbl">Raw Data Immutability Guarantee</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-val">5</div>
+          <div class="metric-lbl">Methodological Research Paradigms</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-val">6</div>
+          <div class="metric-lbl">Scientific Modality Data Handlers</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-val">SHA-256</div>
+          <div class="metric-lbl">Cryptographic Lineage Manifest</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =============================================================
+       CORE EPISTEMOLOGICAL GUARDRAILS
+  ============================================================= -->
+  <section class="section" id="guardrails">
+    <div class="container">
+      <div class="section-header center">
+        <span class="eyebrow">Epistemological Discipline</span>
+        <h2 class="section-title">Enforcing Scientific Guardrails on Autonomous LLMs</h2>
+        <p class="section-desc">
+          When AI coding assistants are left ungoverned, they silently modify datasets, fish for p-values, and hallucinate uncalibrated trendlines. OmniResearch establishes hard deterministic boundaries.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem;">
+        <div class="tech-box" style="padding: 1.25rem;">
+          <div class="corner-cross cross-tl"></div><div class="corner-cross cross-br"></div>
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); font-weight: 700; margin-bottom: 0.5rem;">01 / STRICT QUARANTINE</div>
+          <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem;">Raw Data Immutability</h3>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.55;">
+            <code>01_data/raw/</code> is mathematically quarantined. The agent cannot overwrite, delete, or clean raw source files. Every read is checksummed against initial SHA-256 hashes.
+          </p>
+        </div>
+
+        <div class="tech-box" style="padding: 1.25rem;">
+          <div class="corner-cross cross-tl"></div><div class="corner-cross cross-br"></div>
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); font-weight: 700; margin-bottom: 0.5rem;">02 / PREREGISTRATION</div>
+          <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem;">Hypothesis Matrix</h3>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.55;">
+            Before executing regressions or neural sweeps, null ($H_0$) and alternative ($H_1$) hypotheses, significance α thresholds, and power calculations are committed to <code>00_meta/</code>.
+          </p>
+        </div>
+
+        <div class="tech-box" style="padding: 1.25rem;">
+          <div class="corner-cross cross-tl"></div><div class="corner-cross cross-br"></div>
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); font-weight: 700; margin-bottom: 0.5rem;">03 / MANDATORY UNCERTAINTY</div>
+          <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem;">Error Bounds &amp; Sensitivity</h3>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.55;">
+            Point estimates without standard errors or 95% confidence intervals are rejected. Every reported metric must undergo ablation and sensitivity testing.
+          </p>
+        </div>
+
+        <div class="tech-box" style="padding: 1.25rem;">
+          <div class="corner-cross cross-tl"></div><div class="corner-cross cross-br"></div>
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); font-weight: 700; margin-bottom: 0.5rem;">04 / CRYPTOGRAPHIC LINEAGE</div>
+          <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem;">Manifest Receipts</h3>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.55;">
+            Every plot and table is cryptographically bonded to the raw inputs, transformation script, seed, and OS specs in <code>05_artifacts/provenance/manifest.json</code>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       SCIENTIFIC DATAFLOW SCHEMATIC (SVG)
+  ============================================================= -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Deterministic Dataflow</span>
+        <h2 class="section-title">The OmniResearch Execution Pipeline</h2>
+        <p class="section-desc">
+          How information moves through strict quarantine boundaries without leakage or retroactive tampering.
+        </p>
+      </div>
+
+      <div class="schematic-wrapper tech-box">
+        <svg class="schematic-svg" viewBox="0 0 960 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Step 1: Raw Data -->
+          <g>
+            <rect x="20" y="40" width="160" height="140" rx="3" fill="var(--bg-subtle)" stroke="var(--border-dark)" stroke-width="1.5"/>
+            <rect x="20" y="40" width="160" height="30" fill="var(--bg-muted)"/>
+            <text x="35" y="60" font-family="var(--font-mono)" font-size="11" font-weight="bold" fill="var(--text)">01_data/raw/</text>
+            <text x="35" y="100" font-family="var(--font-sans)" font-size="12" fill="var(--text)">Immutable Source</text>
+            <text x="35" y="120" font-family="var(--font-mono)" font-size="10" fill="#cf222e">[READ-ONLY]</text>
+            <text x="35" y="150" font-family="var(--font-mono)" font-size="9" fill="var(--text-muted)">SHA-256 Checksummed</text>
+          </g>
+
+          <path d="M180 110 L230 110" stroke="var(--border-dark)" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+
+          <!-- Step 2: Protocol -->
+          <g>
+            <rect x="230" y="40" width="160" height="140" rx="3" fill="var(--bg-subtle)" stroke="var(--border-dark)" stroke-width="1.5"/>
+            <rect x="230" y="40" width="160" height="30" fill="var(--bg-muted)"/>
+            <text x="245" y="60" font-family="var(--font-mono)" font-size="11" font-weight="bold" fill="var(--text)">00_meta/ &amp; 02_plan</text>
+            <text x="245" y="100" font-family="var(--font-sans)" font-size="12" fill="var(--text)">Preregistration</text>
+            <text x="245" y="120" font-family="var(--font-mono)" font-size="10" fill="var(--accent)">H₀/H₁ Matrix &amp; α=0.05</text>
+            <text x="245" y="150" font-family="var(--font-mono)" font-size="9" fill="var(--text-muted)">Statistical Plan Locked</text>
+          </g>
+
+          <path d="M390 110 L440 110" stroke="var(--border-dark)" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+          <!-- Step 3: Polyglot Engine -->
+          <g>
+            <rect x="440" y="40" width="180" height="140" rx="3" fill="var(--bg-subtle)" stroke="var(--accent)" stroke-width="1.5"/>
+            <rect x="440" y="40" width="180" height="30" fill="var(--accent-subtle)"/>
+            <text x="455" y="60" font-family="var(--font-mono)" font-size="11" font-weight="bold" fill="var(--accent)">03_src/ Polyglot</text>
+            <text x="455" y="95" font-family="var(--font-sans)" font-size="12" fill="var(--text)">Deterministic Engine</text>
+            <text x="455" y="115" font-family="var(--font-mono)" font-size="10" fill="var(--text-secondary)">Python • R • Julia • C++</text>
+            <text x="455" y="135" font-family="var(--font-mono)" font-size="9" fill="var(--success)">seed=42 • CI=0.95</text>
+            <text x="455" y="155" font-family="var(--font-mono)" font-size="9" fill="var(--text-muted)">Normality &amp; VIF Checked</text>
+          </g>
+
+          <path d="M620 110 L670 110" stroke="var(--border-dark)" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+          <!-- Step 4: Traceable Artifacts -->
+          <g>
+            <rect x="670" y="40" width="160" height="140" rx="3" fill="var(--bg-subtle)" stroke="var(--border-dark)" stroke-width="1.5"/>
+            <rect x="670" y="40" width="160" height="30" fill="var(--bg-muted)"/>
+            <text x="685" y="60" font-family="var(--font-mono)" font-size="11" font-weight="bold" fill="var(--text)">05_artifacts/</text>
+            <text x="685" y="100" font-family="var(--font-sans)" font-size="12" fill="var(--text)">Publication Outputs</text>
+            <text x="685" y="120" font-family="var(--font-mono)" font-size="10" fill="var(--success)">300 DPI / Vector PDF</text>
+            <text x="685" y="150" font-family="var(--font-mono)" font-size="9" fill="var(--text-muted)">Colorblind-Friendly</text>
+          </g>
+
+          <path d="M830 110 L870 110" stroke="var(--border-dark)" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+          <!-- Step 5: Manifest Proof -->
+          <g>
+            <rect x="870" y="55" width="70" height="110" rx="3" fill="var(--code-bg)" stroke="var(--code-border)" stroke-width="1.5"/>
+            <text x="880" y="85" font-family="var(--font-mono)" font-size="10" font-weight="bold" fill="#7ee787">RECEIPT</text>
+            <text x="880" y="115" font-family="var(--font-mono)" font-size="8" fill="#79c0ff">manifest</text>
+            <text x="880" y="130" font-family="var(--font-mono)" font-size="8" fill="#79c0ff">.json</text>
+            <text x="880" y="150" font-family="var(--font-mono)" font-size="7" fill="#8b949e">SHA-256</text>
+          </g>
+
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 8 5 L 0 9 z" fill="var(--border-dark)"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       INTERACTIVE PROVENANCE SIMULATOR
+  ============================================================= -->
+  <section class="section" id="simulator">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Interactive Verification</span>
+        <h2 class="section-title">Cryptographic Lineage Simulator</h2>
+        <p class="section-desc">
+          Test the immutability principle live in your browser. Alter a single character in the raw patient cohort below to see how SHA-256 immediately detects tampering and invalidates the artifact receipt.
+        </p>
+      </div>
+
+      <div class="simulator-grid">
+        <!-- Input Simulation -->
+        <div class="simulator-card tech-box">
+          <div>
+            <div class="sim-header">
+              <span class="sim-title">Source: 01_data/raw/patient_cohort.csv</span>
+              <span class="sim-badge" id="dataStatusBadge">READ-ONLY</span>
+            </div>
+
+            <div class="sim-input-group">
+              <label class="sim-label">Edit CSV Content to Simulate Unauthorized Change:</label>
+              <textarea class="sim-textarea" id="simDataInput" oninput="updateHashSimulation()">patient_id,dose_mg,response_score,adverse_event
+PT-101,0.0,4.2,0
+PT-102,10.0,18.5,0
+PT-103,50.0,78.2,1</textarea>
+            </div>
+
+            <div class="sim-input-group">
+              <label class="sim-label">Analysis Script: 03_src/python/fit_model.py</label>
+              <input type="text" value="def run(): model = HillEquation(seed=42)" readonly style="width: 100%; font-family: var(--font-mono); font-size: 0.76rem; padding: 0.45rem; border: 1px solid var(--border); border-radius: 3px; background: var(--bg-muted); color: var(--text-secondary);">
+            </div>
+          </div>
+
+          <div class="hash-display-box">
+            <span class="hash-label">Live Raw Input SHA-256:</span>
+            <span id="liveRawHash">Computing...</span>
+          </div>
+        </div>
+
+        <!-- Output Manifest Simulation -->
+        <div class="simulator-card tech-box">
+          <div>
+            <div class="sim-header">
+              <span class="sim-title">Audit Log &amp; Verification Manifest</span>
+              <span class="sim-badge">manifest.json</span>
+            </div>
+
+            <div class="hash-display-box" style="margin-bottom: 1rem;">
+              <span class="hash-label">Expected Certified Hash in manifest.json:</span>
+              <span id="certifiedHash" style="color: #8b949e;">c88f4bd42736f26d7492c95f0eaf1b052b746c443e03300c43fc422d9bcf4936</span>
+            </div>
+
+            <div id="tamperIndicator" class="tamper-alert valid">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>DATASET INTACT: SHA-256 matches registered study receipt.</span>
+            </div>
+          </div>
+
+          <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; margin-top: 1rem;">
+            <strong>Methodologist Guardrail:</strong> If the hash diverges, Antigravity halts execution immediately and raises an unverified lineage alarm before any figures can be published.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       FAIR SCAFFOLDING INTERACTIVE EXPLORER
+  ============================================================= -->
+  <section class="section" id="scaffolding">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Workspace Scaffolding</span>
+        <h2 class="section-title">Standard FAIR Directory Architecture</h2>
+        <p class="section-desc">
+          Click through each directory layer to inspect its operational role, file permissions, and scientific guardrails.
+        </p>
+      </div>
+
+      <div class="explorer-container tech-box">
+        <!-- Sidebar Navigation -->
+        <div class="tree-sidebar" id="fairSidebar">
+          <div class="tree-node active" onclick="setTreeExplorer('00_meta', this)">
+            <div class="tree-node-left">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+              <span>00_meta/</span>
+            </div>
+            <span class="tree-badge badge-work">Prereg</span>
+          </div>
+
+          <div class="tree-node" onclick="setTreeExplorer('01_data', this)">
+            <div class="tree-node-left">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+              <span>01_data/raw/</span>
+            </div>
+            <span class="tree-badge badge-lock">Locked</span>
+          </div>
+
+          <div class="tree-node" onclick="setTreeExplorer('02_methodology', this)">
+            <div class="tree-node-left">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+              <span>02_methodology/</span>
+            </div>
+            <span class="tree-badge badge-work">Protocol</span>
+          </div>
+
+          <div class="tree-node" onclick="setTreeExplorer('03_src', this)">
+            <div class="tree-node-left">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+              <span>03_src/</span>
+            </div>
+            <span class="tree-badge badge-work">Polyglot</span>
+          </div>
+
+          <div class="tree-node" onclick="setTreeExplorer('04_experiments', this)">
+            <div class="tree-node-left">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+              <span>04_experiments/</span>
+            </div>
+            <span class="tree-badge badge-work">Sweeps</span>
+          </div>
+
+          <div class="tree-node" onclick="setTreeExplorer('05_artifacts', this)">
+            <div class="tree-node-left">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+              <span>05_artifacts/</span>
+            </div>
+            <span class="tree-badge badge-out">Receipts</span>
+          </div>
+
+          <div class="tree-node" onclick="setTreeExplorer('06_reports', this)">
+            <div class="tree-node-left">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+              <span>06_reports/</span>
+            </div>
+            <span class="tree-badge badge-out">Papers</span>
+          </div>
+        </div>
+
+        <!-- Explorer Detail Content -->
+        <div class="explorer-pane" id="fairDetailPane">
+          <span class="pane-tag" id="fairBadge">00_meta/</span>
+          <h3 class="pane-h2" id="fairTitle">Research Objectives &amp; Preregistered Hypotheses</h3>
+          <p class="pane-lead" id="fairDesc">
+            Stores formal hypothesis matrices, study objectives, and decision logs. Establishes the study protocol prior to computing statistics.
+          </p>
+
+          <div class="pane-protocol-box">
+            <div class="pane-protocol-title">Directory Protocol &amp; Mandated Files</div>
+            <ul class="pane-protocol-list" id="fairList">
+              <li class="pane-protocol-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><code>hypothesis_matrix.md</code>: Explicit null vs. alternative hypotheses, α-thresholds, and minimum detectable effect sizes.</span>
+              </li>
+              <li class="pane-protocol-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><code>decision_log.md</code>: Chronological methodological trade-offs and modeling decisions.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       5 METHODOLOGICAL PARADIGMS
+  ============================================================= -->
+  <section class="section" id="paradigms">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Quantitative Specialization</span>
+        <h2 class="section-title">Five Methodological Research Paradigms</h2>
+        <p class="section-desc">
+          OmniResearch adapts its statistical rules depending on your study design. Click a paradigm to inspect its required checks and copy a production prompt.
+        </p>
+      </div>
+
+      <div class="tabs-bar">
+        <button class="paradigm-tab-btn active" onclick="setParadigmTab(0, this)">1. Experimental &amp; RCT</button>
+        <button class="paradigm-tab-btn" onclick="setParadigmTab(1, this)">2. Causal &amp; Observational</button>
+        <button class="paradigm-tab-btn" onclick="setParadigmTab(2, this)">3. Computational Simulation</button>
+        <button class="paradigm-tab-btn" onclick="setParadigmTab(3, this)">4. Empirical Machine Learning</button>
+        <button class="paradigm-tab-btn" onclick="setParadigmTab(4, this)">5. Systematic Reviews &amp; Meta</button>
+      </div>
+
+      <!-- Tab 0: RCT -->
+      <div class="paradigm-view active" id="pview-0">
+        <div class="pview-head">
+          <div>
+            <h3 class="pview-title">Experimental Trials &amp; Randomized Controlled Trials (RCT)</h3>
+            <p class="pview-sub">Clinical dose-response, split-plot designs, laboratory biology, randomized A/B trials.</p>
+          </div>
+          <span class="pview-tag">paradigms/experimental_rct.md</span>
+        </div>
+        <div class="pview-content-grid">
+          <div class="pview-col">
+            <div class="pview-col-title">Mandatory Analytical Protocol</div>
+            <ul>
+              <li>Pre-experiment power analysis (Cohen's d, minimum detectable effect).</li>
+              <li>Baseline covariate balance checks (Standardized Mean Differences).</li>
+              <li>Intent-to-Treat (ITT) alongside Per-Protocol (PP) estimates.</li>
+              <li>Linear Mixed-Effects Models (LMM) with random subject intercepts.</li>
+            </ul>
+          </div>
+          <div class="pview-prompt-card">
+            <div class="pview-col-title" style="color: #8b949e;">Ready-to-Use Agent Prompt</div>
+            <div class="pview-prompt-text" id="prompt-0">"Examine patient cohort in 01_data/raw/oncology_trial.csv. Generate Kaplan-Meier curves comparing Treatment vs Control, test Schoenfeld residuals for Cox PH compliance, and estimate 95% CIs."</div>
+            <div class="prompt-footer">
+              <span style="font-family: var(--font-mono); font-size: 0.7rem; color: #8b949e;">Antigravity / Claude / Cursor</span>
+              <button class="cmd-copy-btn" onclick="copyPrompt('prompt-0', this)">Copy Prompt</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 1: Causal -->
+      <div class="paradigm-view" id="pview-1">
+        <div class="pview-head">
+          <div>
+            <h3 class="pview-title">Causal Inference &amp; Observational Econometrics</h3>
+            <p class="pview-sub">Economics, epidemiology, policy evaluations, and natural experiments.</p>
+          </div>
+          <span class="pview-tag">paradigms/causal_observational.md</span>
+        </div>
+        <div class="pview-content-grid">
+          <div class="pview-col">
+            <div class="pview-col-title">Mandatory Analytical Protocol</div>
+            <ul>
+              <li>Difference-in-Differences (DiD) with event-study pre-trend validation.</li>
+              <li>Instrumental Variables (IV / 2SLS) with first-stage F-statistic (&gt; 10 rule).</li>
+              <li>Regression Discontinuity Design (RDD) with McCrary sorting density tests.</li>
+              <li>Heteroskedasticity-consistent cluster-robust standard errors.</li>
+            </ul>
+          </div>
+          <div class="pview-prompt-card">
+            <div class="pview-col-title" style="color: #8b949e;">Ready-to-Use Agent Prompt</div>
+            <div class="pview-prompt-text" id="prompt-1">"Estimate the causal impact of the regional policy in 01_data/raw/panel.csv using staggered DiD with state-clustered SEs. Perform a parallel trends diagnostic and plot event-study leads and lags."</div>
+            <div class="prompt-footer">
+              <span style="font-family: var(--font-mono); font-size: 0.7rem; color: #8b949e;">Antigravity / Claude / Cursor</span>
+              <button class="cmd-copy-btn" onclick="copyPrompt('prompt-1', this)">Copy Prompt</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Simulation -->
+      <div class="paradigm-view" id="pview-2">
+        <div class="pview-head">
+          <div>
+            <h3 class="pview-title">Computational Simulation &amp; Reaction Kinetics</h3>
+            <p class="pview-sub">Differential equations (ODE/PDE), molecular dynamics, stochastic kinetics.</p>
+          </div>
+          <span class="pview-tag">paradigms/computational_simulation.md</span>
+        </div>
+        <div class="pview-content-grid">
+          <div class="pview-col">
+            <div class="pview-col-title">Mandatory Analytical Protocol</div>
+            <ul>
+              <li>Explicit pseudo-random seed preservation for Monte Carlo sequences.</li>
+              <li>Stability analysis across stiff ODE regimes (implicit Radau / BDF solvers).</li>
+              <li>Global sensitivity analysis (Sobol indices, Morris screening).</li>
+              <li>Mass and energy conservation checks across simulation time steps.</li>
+            </ul>
+          </div>
+          <div class="pview-prompt-card">
+            <div class="pview-col-title" style="color: #8b949e;">Ready-to-Use Agent Prompt</div>
+            <div class="pview-prompt-text" id="prompt-2">"Build a numerical solver in 03_src/python/ for Michaelis-Menten kinetics. Test solver stability across stiff ODE regimes, perform a parameter sweep for k_cat, and verify mass conservation."</div>
+            <div class="prompt-footer">
+              <span style="font-family: var(--font-mono); font-size: 0.7rem; color: #8b949e;">Antigravity / Claude / Cursor</span>
+              <button class="cmd-copy-btn" onclick="copyPrompt('prompt-2', this)">Copy Prompt</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: ML -->
+      <div class="paradigm-view" id="pview-3">
+        <div class="pview-head">
+          <div>
+            <h3 class="pview-title">Empirical Machine Learning &amp; Benchmarks</h3>
+            <p class="pview-sub">Predictive models, tabular benchmarks, feature ablation, hyperparameter tuning.</p>
+          </div>
+          <span class="pview-tag">paradigms/machine_learning_empirical.md</span>
+        </div>
+        <div class="pview-content-grid">
+          <div class="pview-col">
+            <div class="pview-col-title">Mandatory Analytical Protocol</div>
+            <ul>
+              <li>Zero data leakage: Preprocessing strictly nested inside CV folds.</li>
+              <li>5×2 cross-validated paired t-tests (Dietterich's test) for model comparisons.</li>
+              <li>Systematic ablation studies quantifying the marginal contribution of features.</li>
+              <li>Reporting PR-AUC and calibration curves alongside ROC-AUC.</li>
+            </ul>
+          </div>
+          <div class="pview-prompt-card">
+            <div class="pview-col-title" style="color: #8b949e;">Ready-to-Use Agent Prompt</div>
+            <div class="pview-prompt-text" id="prompt-3">"Benchmark tabular classifiers on 01_data/raw/credit.csv. Ensure leak-free scikit-learn Pipelines, run 5x2cv statistical tests against baseline XGBoost, and report feature ablation impact."</div>
+            <div class="prompt-footer">
+              <span style="font-family: var(--font-mono); font-size: 0.7rem; color: #8b949e;">Antigravity / Claude / Cursor</span>
+              <button class="cmd-copy-btn" onclick="copyPrompt('prompt-3', this)">Copy Prompt</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 4: Meta -->
+      <div class="paradigm-view" id="pview-4">
+        <div class="pview-head">
+          <div>
+            <h3 class="pview-title">Systematic Reviews &amp; Meta-Analyses</h3>
+            <p class="pview-sub">Evidence synthesis, effect pooling, Cochrane Risk of Bias, heterogeneity.</p>
+          </div>
+          <span class="pview-tag">paradigms/meta_analysis_systematic.md</span>
+        </div>
+        <div class="pview-content-grid">
+          <div class="pview-col">
+            <div class="pview-col-title">Mandatory Analytical Protocol</div>
+            <ul>
+              <li>PRISMA 2020 flow reporting (identified, screened, included).</li>
+              <li>Random-effects pooling models (REML / DerSimonian-Laird).</li>
+              <li>Heterogeneity metrics: Cochran's Q, I² statistic, and τ² calculation.</li>
+              <li>Publication bias assessment via Egger's test and funnel plots.</li>
+            </ul>
+          </div>
+          <div class="pview-prompt-card">
+            <div class="pview-col-title" style="color: #8b949e;">Ready-to-Use Agent Prompt</div>
+            <div class="pview-prompt-text" id="prompt-4">"Synthesize the 24 effect sizes in 01_data/raw/studies.csv. Compute pooled estimates via random-effects REML, generate a forest plot, compute I^2 heterogeneity, and evaluate bias via Egger's test."</div>
+            <div class="prompt-footer">
+              <span style="font-family: var(--font-mono); font-size: 0.7rem; color: #8b949e;">Antigravity / Claude / Cursor</span>
+              <button class="cmd-copy-btn" onclick="copyPrompt('prompt-4', this)">Copy Prompt</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =============================================================
+       6 SCIENTIFIC DATA HANDLERS
+  ============================================================= -->
+  <section class="section" id="handlers">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Modality Hygiene</span>
+        <h2 class="section-title">Six Specialized Scientific Data Handlers</h2>
+        <p class="section-desc">
+          Specialized ingestion protocols tailored to domain data structures. Coordinates, sampling frequencies, and missingness are audited before modeling.
+        </p>
+      </div>
+
+      <div class="handlers-grid">
+        <div class="hcard">
+          <div class="hcard-head">
+            <h3 class="hcard-title">Tabular &amp; Survey Data</h3>
+            <span class="hcard-ext">.csv .parquet .dta</span>
+          </div>
+          <p class="hcard-desc">Handles survey weights, multi-stage stratification (PSU/strata), and multivariate imputation (MICE).</p>
+          <div class="hcard-spec">Guardrail: Global imputation prior to train/test split is strictly rejected.</div>
+        </div>
+
+        <div class="hcard">
+          <div class="hcard-head">
+            <h3 class="hcard-title">Spatial &amp; Geospatial</h3>
+            <span class="hcard-ext">.geojson .tif .shp</span>
+          </div>
+          <p class="hcard-desc">Coordinate Reference System (CRS) hygiene and spatial autocorrelation (Moran's I).</p>
+          <div class="hcard-spec">Guardrail: Explicit EPSG projection transformation required before distance calculation.</div>
+        </div>
+
+        <div class="hcard">
+          <div class="hcard-head">
+            <h3 class="hcard-title">Biological Sequences</h3>
+            <span class="hcard-ext">.fasta .pdb .sdf</span>
+          </div>
+          <p class="hcard-desc">RNA-Seq normalization (DESeq2), 3D PDB structure analysis, and SMILES cheminformatics.</p>
+          <div class="hcard-spec">Guardrail: Library size and dispersion checked prior to differential expression.</div>
+        </div>
+
+        <div class="hcard">
+          <div class="hcard-head">
+            <h3 class="hcard-title">Signals &amp; Sensor Streams</h3>
+            <span class="hcard-ext">.edf .wav .h5</span>
+          </div>
+          <p class="hcard-desc">Biomedical and physical time series (EEG/ECG). Nyquist theorem compliance and bandpass filters.</p>
+          <div class="hcard-spec">Guardrail: Phase distortion prevented via forward-backward digital filtering (filtfilt).</div>
+        </div>
+
+        <div class="hcard">
+          <div class="hcard-head">
+            <h3 class="hcard-title">Text Corpora &amp; Humanities</h3>
+            <span class="hcard-ext">.txt .xml .tei</span>
+          </div>
+          <p class="hcard-desc">Quantitative stylometry (Burrows' Delta), topic modeling (BERTopic), and lemmatized collocations.</p>
+          <div class="hcard-spec">Guardrail: Stopword dictionaries and tokenizer choices fully documented in 02_methodology/.</div>
+        </div>
+
+        <div class="hcard">
+          <div class="hcard-head">
+            <h3 class="hcard-title">Graphs &amp; Complex Networks</h3>
+            <span class="hcard-ext">.gexf .graphml</span>
+          </div>
+          <p class="hcard-desc">Topological properties: degree distributions, small-worldness, and community modularity.</p>
+          <div class="hcard-spec">Guardrail: Multi-edges and self-loops explicitly handled before matrix decomposition.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       CRYPTOGRAPHIC MANIFEST RECEIPT
+  ============================================================= -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Cryptographic Auditing</span>
+        <h2 class="section-title">Cryptographic Lineage Manifest: manifest.json</h2>
+        <p class="section-desc">
+          Every figure and table is permanently sealed with an immutable SHA-256 fingerprint. Inspect an actual certified receipt from our clinical dose-response example.
+        </p>
+      </div>
+
+      <div class="manifest-dual">
+        <div>
+          <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem;">
+            When results are published, anyone can verify the exact computational environment and dataset that generated Figure 1:
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+            <div style="display: flex; gap: 0.6rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent); flex-shrink: 0; margin-top: 0.1rem;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <div>
+                <strong style="font-size: 0.88rem; color: var(--text);">Tamper-Proof Raw Input Bond</strong>
+                <p style="font-size: 0.82rem; color: var(--text-secondary);">Guarantees that raw source tables were not modified in-flight.</p>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 0.6rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent); flex-shrink: 0; margin-top: 0.1rem;"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+              <div>
+                <strong style="font-size: 0.88rem; color: var(--text);">Exact Script SHA-256 Fingerprint</strong>
+                <p style="font-size: 0.82rem; color: var(--text-secondary);">Proves the specific Python, R, or Julia code that ran.</p>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 0.6rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent); flex-shrink: 0; margin-top: 0.1rem;"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+              <div>
+                <strong style="font-size: 0.88rem; color: var(--text);">Locked Hyperparameters &amp; Seeds</strong>
+                <p style="font-size: 0.82rem; color: var(--text-secondary);">Fixed random seeds (seed=42) and explicit confidence levels (95%).</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-mock">
+          <div class="code-mock-header">
+            <span>05_artifacts/provenance/manifest.json</span>
+            <span>schema v1.0.0</span>
+          </div>
+          <pre>{
+  <span class="syn-k">"schema_version"</span>: <span class="syn-s">"1.0.0"</span>,
+  <span class="syn-k">"records"</span>: [
+    {
+      <span class="syn-k">"artifact_id"</span>: <span class="syn-s">"dose_summary.csv"</span>,
+      <span class="syn-k">"artifact_sha256"</span>: <span class="syn-s">"e5309e7567f7efdbc90aa2874efcea654d31ec4e9de031aef7e582b6a21deefd"</span>,
+      <span class="syn-k">"timestamp_utc"</span>: <span class="syn-s">"2026-09-18T09:28:17Z"</span>,
+      <span class="syn-k">"source_script"</span>: <span class="syn-s">"03_src/python/analyze_dose_response.py"</span>,
+      <span class="syn-k">"script_sha256"</span>: <span class="syn-s">"7f6c256cba08b38b6d85f3f4526645c92c0a97b99a5e0b7a883cf260d42e5851"</span>,
+      <span class="syn-k">"input_datasets"</span>: [
+        {
+          <span class="syn-k">"path"</span>: <span class="syn-s">"01_data/raw/dose_response_trial.csv"</span>,
+          <span class="syn-k">"sha256"</span>: <span class="syn-s">"c88f4bd42736f26d7492c95f0eaf1b052b746c443e03300c43fc422d9bcf4936"</span>
+        }
+      ],
+      <span class="syn-k">"parameters"</span>: {
+        <span class="syn-k">"confidence_level"</span>: <span class="syn-n">0.95</span>,
+        <span class="syn-k">"model"</span>: <span class="syn-s">"dose_group_summary"</span>
+      },
+      <span class="syn-k">"environment"</span>: {
+        <span class="syn-k">"os"</span>: <span class="syn-s">"Windows / Linux / macOS"</span>,
+        <span class="syn-k">"python_version"</span>: <span class="syn-s">"3.14.2"</span>
+      }
+    }
+  ]
+}</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       PLATFORM COMPATIBILITY MATRIX
+  ============================================================= -->
+  <section class="section" id="platforms">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Polyglot &amp; Cross-Platform</span>
+        <h2 class="section-title">Zero-Configuration Agent Support</h2>
+        <p class="section-desc">
+          OmniResearch integrates natively with any modern coding agent via standard discovery instruction files.
+        </p>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="clean-table">
+          <thead>
+            <tr>
+              <th>Agentic Environment</th>
+              <th>Primary Configuration</th>
+              <th>Activation Mechanism</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Google Antigravity</strong></td>
+              <td><code>GEMINI.md</code> + <code>SKILL.md</code></td>
+              <td>Discovered automatically; active on all data analysis and scientific inquiries.</td>
+            </tr>
+            <tr>
+              <td><strong>Claude Code</strong></td>
+              <td><code>CLAUDE.md</code></td>
+              <td>Terminal CLI activation with custom slash commands (<code>/scaffold</code>, <code>/toolchains</code>).</td>
+            </tr>
+            <tr>
+              <td><strong>Cursor IDE</strong></td>
+              <td><code>.cursorrules</code></td>
+              <td>Active in Cursor Composer / Chat (<code>Ctrl+I</code> / <code>Cmd+I</code>).</td>
+            </tr>
+            <tr>
+              <td><strong>Copilot Workspace &amp; Codex</strong></td>
+              <td><code>AGENTS.md</code></td>
+              <td>Adheres to the Universal Agent Instructions standard for multi-agent workflows.</td>
+            </tr>
+            <tr>
+              <td><strong>Open Interpreter &amp; Aider</strong></td>
+              <td><code>AGENTS.md</code> + <code>scripts/</code></td>
+              <td>Executes directly in local terminal environments using pure standard-library tools.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       QUICKSTART INSTALLATION & CITATION
+  ============================================================= -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header center">
+        <span class="eyebrow">Getting Started</span>
+        <h2 class="section-title">Elevate Your Research Agent Today</h2>
+        <p class="section-desc">
+          Install globally across all workspaces or initialize directly within your current Git repository.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+        <div class="tech-box" style="padding: 1.25rem;">
+          <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">macOS / Linux Installation</h3>
+          <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.85rem;">Installs into <code>~/.gemini/config/skills/research-scientist/</code>.</p>
+          <div style="background: var(--code-bg); border: 1px solid var(--code-border); padding: 0.65rem; border-radius: 3px; font-family: var(--font-mono); font-size: 0.78rem; color: #79c0ff; overflow-x: auto;">
+            curl -fsSL https://raw.githubusercontent.com/krsdntr/OmniResearch/main/install.sh | bash
+          </div>
+        </div>
+
+        <div class="tech-box" style="padding: 1.25rem;">
+          <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">Windows PowerShell Installation</h3>
+          <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.85rem;">Installs into <code>C:\Users\&lt;User&gt;\.gemini\config\skills\research-scientist\</code>.</p>
+          <div style="background: var(--code-bg); border: 1px solid var(--code-border); padding: 0.65rem; border-radius: 3px; font-family: var(--font-mono); font-size: 0.78rem; color: #79c0ff; overflow-x: auto;">
+            irm https://raw.githubusercontent.com/krsdntr/OmniResearch/main/install.ps1 | iex
+          </div>
+        </div>
+      </div>
+
+      <!-- BibTeX Citation -->
+      <div class="citation-box tech-box">
+        <div class="citation-header">
+          <span class="citation-title">BibTeX Citation</span>
+          <button class="cmd-copy-btn" onclick="copyCitation(this)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span>Copy BibTeX</span>
+          </button>
+        </div>
+        <pre style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-secondary); line-height: 1.5; overflow-x: auto;" id="bibtexText">@software{omniresearch2026,
+  author = {krsdntr},
+  title = {OmniResearch: Universal Autonomous Scientific Research Workbench for AI Coding Agents},
+  year = {2026},
+  url = {https://github.com/krsdntr/OmniResearch}
+}</pre>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =============================================================
+       FOOTER
+  ============================================================= -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-row">
+        <div>
+          <strong>OmniResearch Scientist Workbench</strong> &bull; Released under the MIT License.
+        </div>
+        <ul class="footer-nav">
+          <li><a href="https://github.com/krsdntr/OmniResearch" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
+          <li><a href="https://github.com/krsdntr/OmniResearch/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT License</a></li>
+          <li><a href="https://github.com/krsdntr/OmniResearch/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contributing</a></li>
+          <li><a href="https://github.com/krsdntr/OmniResearch/blob/main/CODE_OF_CONDUCT.md" target="_blank" rel="noopener noreferrer">Code of Conduct</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =============================================================
+       LIGHTWEIGHT VANILLA SCRIPT
+  ============================================================= -->
+  <script>
+    // 1. Theme Management (Light / Dark)
+    const themeBtn = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+      }
+      localStorage.setItem('omni-theme', theme);
+    }
+
+    const initialTheme = localStorage.getItem('omni-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    applyTheme(initialTheme);
+
+    themeBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      applyTheme(isDark ? 'light' : 'dark');
+    });
+
+    // 2. Terminal Live Simulation (Clean formatting without flex gaps)
+    const terminalLines = [
+      { html: '<span class="term-prompt-symbol">$</span> <span class="term-dim">antigravity --prompt</span> <span class="term-accent">"Analyze Phase II trial"</span>', delay: 150 },
+      { html: '<span class="term-dim">[09:28:14]</span> <span class="term-success">[PASS]</span> OmniResearch Protocol engaged.', delay: 600 },
+      { html: '<span class="term-dim">[09:28:15]</span> 🔒 Checksumming raw input: <span class="term-path">01_data/raw/dose_trial.csv</span>', delay: 1100 },
+      { html: '<span class="term-dim">[09:28:15]</span> <span class="term-hash">SHA-256: c88f4bd42736f26d7492c95f0eaf1b05...</span> <span class="term-success">[LOCKED]</span>', delay: 1600 },
+      { html: '<span class="term-dim">[09:28:16]</span> 📝 Registering H₀: Slope = 0 (α = 0.05) in <span class="term-path">00_meta/hypothesis_matrix.md</span>', delay: 2200 },
+      { html: '<span class="term-dim">[09:28:16]</span> 📐 Checking assumptions: Shapiro-Wilk (p=0.42, Normal), Breusch-Pagan (p=0.31)', delay: 2800 },
+      { html: '<span class="term-dim">[09:28:17]</span> ⚡ Executing 4PL Hill Equation with 95% Bootstrap CIs (seed=42)...', delay: 3400 },
+      { html: '<span class="term-dim">[09:28:17]</span> 📊 Saved vector chart: <span class="term-path">05_artifacts/figures/dose_curve.pdf</span>', delay: 4000 },
+      { html: '<span class="term-dim">[09:28:17]</span> 🧾 Writing receipt to <span class="term-path">05_artifacts/provenance/manifest.json</span>', delay: 4600 },
+      { html: '<span class="term-dim">[09:28:18]</span> <span class="term-success">✔ RESEARCH SYNTHESIS COMPLETED</span> &bull; 0 p-hacking flags &bull; Lineage verified.', delay: 5200 }
+    ];
+
+    let termTimeouts = [];
+    function runTerminalSimulation() {
+      const screen = document.getElementById('termScreen');
+      screen.innerHTML = '';
+      termTimeouts.forEach(t => clearTimeout(t));
+      termTimeouts = [];
+
+      terminalLines.forEach((item) => {
+        const timeout = setTimeout(() => {
+          const div = document.createElement('div');
+          div.className = 'term-line visible';
+          div.innerHTML = item.html;
+          screen.appendChild(div);
+          screen.scrollTop = screen.scrollHeight;
+        }, item.delay);
+        termTimeouts.push(timeout);
+      });
+    }
+
+    function restartTerminal() {
+      runTerminalSimulation();
+    }
+    runTerminalSimulation();
+
+    // 3. Quick Install OS Toggle
+    const bashStr = 'curl -fsSL https://raw.githubusercontent.com/krsdntr/OmniResearch/main/install.sh | bash';
+    const pwshStr = 'irm https://raw.githubusercontent.com/krsdntr/OmniResearch/main/install.ps1 | iex';
+
+    function setInstaller(os, btn) {
+      document.querySelectorAll('.os-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('installCmd').textContent = os === 'bash' ? bashStr : pwshStr;
+    }
+
+    function copyInstallCmd(btn) {
+      const txt = document.getElementById('installCmd').textContent.trim();
+      navigator.clipboard.writeText(txt).then(() => {
+        const span = btn.querySelector('span');
+        const orig = span.textContent;
+        span.textContent = 'Copied!';
+        setTimeout(() => { span.textContent = orig; }, 1600);
+      });
+    }
+
+    function copyCitation(btn) {
+      const txt = document.getElementById('bibtexText').textContent.trim();
+      navigator.clipboard.writeText(txt).then(() => {
+        const span = btn.querySelector('span');
+        const orig = span.textContent;
+        span.textContent = 'Copied!';
+        setTimeout(() => { span.textContent = orig; }, 1600);
+      });
+    }
+
+    function copyPrompt(id, btn) {
+      const txt = document.getElementById(id).textContent.trim().replace(/^"|"$/g, '');
+      navigator.clipboard.writeText(txt).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = orig; }, 1600);
+      });
+    }
+
+    // 4. SHA-256 Provenance Simulator
+    async function sha256(message) {
+      const msgBuffer = new TextEncoder().encode(message);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    const baselineCertifiedHash = 'c88f4bd42736f26d7492c95f0eaf1b052b746c443e03300c43fc422d9bcf4936';
+    const initialText = document.getElementById('simDataInput').value.trim();
+
+    async function updateHashSimulation() {
+      const input = document.getElementById('simDataInput').value.trim();
+      const currentHash = await sha256(input);
+      document.getElementById('liveRawHash').textContent = currentHash;
+
+      const indicator = document.getElementById('tamperIndicator');
+      const badge = document.getElementById('dataStatusBadge');
+
+      if (input === initialText) {
+        indicator.className = 'tamper-alert valid';
+        indicator.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>DATASET INTACT: SHA-256 matches registered study receipt.</span>';
+        badge.textContent = 'READ-ONLY';
+        badge.style.color = 'var(--text-muted)';
+        badge.style.borderColor = 'var(--border)';
+      } else {
+        indicator.className = 'tamper-alert invalid';
+        indicator.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg><span>INTEGRITY BREACH DETECTED: Hash mismatch! Execution halted by methodologist guardrail.</span>';
+        badge.textContent = 'MODIFIED (UNSAFE)';
+        badge.style.color = '#cf222e';
+        badge.style.borderColor = '#ff8182';
+      }
+    }
+    updateHashSimulation();
+
+    // 5. FAIR Scaffolding Explorer Data
+    const fairDetails = {
+      '00_meta': {
+        badge: '00_meta/',
+        title: 'Research Objectives & Preregistered Hypotheses',
+        desc: 'Contains study preregistration documents, formal hypothesis matrices, decision logs, and milestone roadmaps. Establishes the study protocol prior to computing any statistical figures.',
+        items: [
+          '<code>hypothesis_matrix.md</code>: Null vs. alternative hypotheses, α-level, effect size thresholds.',
+          '<code>decision_log.md</code>: Chronological methodological choices, trade-offs, and researcher degrees of freedom.'
+        ]
+      },
+      '01_data': {
+        badge: '01_data/raw/ (IMMUTABLE)',
+        title: 'Three-Tier Data Quarantine Architecture',
+        desc: 'Guarantees uncorrupted data lineage. <code>raw/</code> is mathematically read-only. Intermediate files live in <code>interim/</code>, and analysis tables reside in <code>processed/</code>.',
+        items: [
+          '<code>01_data/raw/</code>: Read-only source files. Never modified or overwritten in place.',
+          '<code>01_data/processed/</code>: Cleaned, analysis-ready tables produced exclusively by documented transformation scripts.'
+        ]
+      },
+      '02_methodology': {
+        badge: '02_methodology/',
+        title: 'Formal Statistical Analysis Plan (SAP)',
+        desc: 'Explicit pre-analysis specifications detailing planned sample splits, power calculations, estimators, and mandatory diagnostic checks.',
+        items: [
+          '<code>statistical_plan.md</code>: Mathematical model equations, error clustering, and multiple testing adjustments.',
+          'Mandates assumption checking (Shapiro-Wilk, Breusch-Pagan, VIF) before p-value calculation.'
+        ]
+      },
+      '03_src': {
+        badge: '03_src/ (python • r • julia • cpp)',
+        title: 'Polyglot Execution Pipelines',
+        desc: 'Language-organized source code for data transformations, numerical routines, and model estimation. Modular and deterministic.',
+        items: [
+          'Organized by language: <code>python/</code>, <code>r/</code>, <code>julia/</code>, <code>cpp/</code>.',
+          'Enforces fixed pseudo-random seeds (e.g., <code>seed=42</code>) across all stochastic operations.'
+        ]
+      },
+      '04_experiments': {
+        badge: '04_experiments/',
+        title: 'Computational Runs & Model Checkpoints',
+        desc: 'Tracks hyperparameter sweeps, cross-validation benchmark runs, ablation iterations, and exploratory computational notebooks.',
+        items: [
+          'Every experiment run references its corresponding source script in <code>03_src/</code>.',
+          'Captures training convergence logs and loss trajectories.'
+        ]
+      },
+      '05_artifacts': {
+        badge: '05_artifacts/ (figures • tables • provenance)',
+        title: 'Publication Artifacts & Provenance Receipts',
+        desc: 'Publication-ready high-resolution figures (300+ DPI / Vector PDF) and tables, accompanied by automated cryptographic receipts.',
+        items: [
+          '<code>05_artifacts/provenance/manifest.json</code>: SHA-256 receipts connecting figures to scripts and raw data.',
+          'Figures generated using colorblind-safe palettes (Viridis, ColorBrewer).'
+        ]
+      },
+      '06_reports': {
+        badge: '06_reports/',
+        title: 'Formal Findings & Scientific Synthesis',
+        desc: 'Synthesized research papers, executive summaries, and formal manuscripts formatted in LaTeX, Typst, Quarto, or Markdown.',
+        items: [
+          'Includes explicit uncertainty bounds, limitation disclosures, and sensitivity analysis summaries.',
+          'Directly references verified artifacts from <code>05_artifacts/</code>.'
+        ]
+      }
+    };
+
+    function setTreeExplorer(key, nodeEl) {
+      document.querySelectorAll('#fairSidebar .tree-node').forEach(n => n.classList.remove('active'));
+      nodeEl.classList.add('active');
+
+      const data = fairDetails[key];
+      if (!data) return;
+
+      document.getElementById('fairBadge').textContent = data.badge;
+      document.getElementById('fairTitle').textContent = data.title;
+      document.getElementById('fairDesc').textContent = data.desc;
+
+      const listEl = document.getElementById('fairList');
+      listEl.innerHTML = data.items.map(it => `
+        <li class="pane-protocol-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>${it}</span>
+        </li>
+      `).join('');
+    }
+
+    // 6. Paradigm Tab Switching
+    function setParadigmTab(idx, btn) {
+      document.querySelectorAll('.tabs-bar .paradigm-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      document.querySelectorAll('.paradigm-view').forEach((view, i) => {
+        view.classList.toggle('active', i === idx);
+      });
+    }
+  </script>
+</body>
+</html>
