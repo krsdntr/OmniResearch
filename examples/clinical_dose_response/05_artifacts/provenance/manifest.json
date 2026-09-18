@@ -1,17 +1,19 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "records": [
     {
       "artifact_id": "dose_summary.csv",
       "artifact_path": "D:/kris/Research skill/examples/clinical_dose_response/05_artifacts/tables/dose_summary.csv",
       "artifact_sha256": "e5309e7567f7efdbc90aa2874efcea654d31ec4e9de031aef7e582b6a21deefd",
-      "timestamp_utc": "2026-09-18T09:28:17.779222+00:00",
+      "artifact_size_bytes": 326,
+      "timestamp_utc": "2026-09-18T13:04:00.864137+00:00",
       "source_script": "D:/kris/Research skill/examples/clinical_dose_response/03_src/python/analyze_dose_response.py",
-      "script_sha256": "7f6c256cba08b38b6d85f3f4526645c92c0a97b99a5e0b7a883cf260d42e5851",
+      "script_sha256": "8bfffac800093026c5695c63c79ebf2d4aa050531bd2f20cbc20a84c83742eb9",
       "input_datasets": [
         {
           "path": "D:/kris/Research skill/examples/clinical_dose_response/01_data/raw/dose_response_trial.csv",
-          "sha256": "c88f4bd42736f26d7492c95f0eaf1b052b746c443e03300c43fc422d9bcf4936"
+          "sha256": "c88f4bd42736f26d7492c95f0eaf1b052b746c443e03300c43fc422d9bcf4936",
+          "size_bytes": 531
         }
       ],
       "parameters": {

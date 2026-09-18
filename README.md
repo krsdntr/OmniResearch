@@ -38,6 +38,20 @@ Instead of writing ungrounded code or hallucinating figures, the agent operates 
 
 ---
 
+## 🛡️ The 5 Pillars of Industry-Standard Rigor (v1.1)
+
+OmniResearch bridges advanced AI capabilities with institutional research integrity through 5 purpose-built pillars:
+
+| Pillar | Problem Solved | OmniResearch Solution | Command / Tool |
+| :--- | :--- | :--- | :--- |
+| **1. Human-in-the-Loop Gates** | Unsupervised exploration & post-hoc hypothesis hacking (HARKing). | Digital signature checkpoints locking hypotheses and models before raw data exposure. | `python gate_check.py lock --gate hypothesis-lock` |
+| **2. Auto-Appendix for Journals** | Researchers spending days manually writing technical supplementary info. | One-click compilation of Nature/Science-grade LaTeX & Markdown Supplementary Materials. | `python generate_appendix.py --format all` |
+| **3. Real-time Leakage Scanner** | AI writing leaky code (e.g. data scaling prior to train-test split). | Static AST analysis detecting pre-split transformations, temporal leakage, and target contamination. | `python scan_leakage.py 03_src/python --strict` |
+| **4. Big Data Merkle Hashing** | Naive SHA-256 stalling on gigabyte/terabyte-scale datasets (genomics, astronomy). | 8MB streaming buffers + 64MB chunked Merkle Tree roots for instant partial & global verification. | `python record_provenance.py --verify` |
+| **5. Adversarial Reviewer 2** | AI sycophancy & confirmation bias pleasing the user's initial hunch. | Hostile red-team auditing: marginal p-value checks, 5% outlier trimming, permutation tests, and multiverse analysis. | `00_meta/adversarial_audit.md` |
+
+---
+
 ## 📂 Standard FAIR Workspace Scaffolding
 
 ```text

@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0.0",
+  "gates": {
+    "hypothesis-lock": {
+      "gate_name": "hypothesis-lock",
+      "status": "APPROVED",
+      "author": "Dr. Sarah Chen (Principal Investigator)",
+      "timestamp_utc": "2026-09-18T13:04:40.764477+00:00",
+      "notes": "Pre-trial dose response hypothesis locked.",
+      "description": "Preregistration freeze: locks hypothesis matrix and power plan prior to raw data exposure.",
+      "prerequisites": {
+        "00_meta/hypothesis_matrix.md": "8a6295ba1621bd2678c3d1c48be81aa62ca2b25b6d960e17e7190a15adcf1f6d"
+      },
+      "digital_signature": "9f873d8cf34298401028888e3247f8f0d39aaa16a2874130589d89c62307ab76",
+      "environment": {
+        "os": "Windows",
+        "python_version": "3.14.2"
+      }
+    }
+  }
+}

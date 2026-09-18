@@ -40,3 +40,14 @@ Every major conclusion must survive at least two of the following checks:
 2. **Subsample Analysis**: Verifying the effect persists across demographic or temporal splits.
 3. **Outlier Sensitivity**: Re-evaluating after winsorizing or trimming extreme observations (Cook's distance $> 4/n$).
 4. **Placebo / Permutation Tests**: Randomly shuffling treatment labels or outcome variables to ensure false discovery rate aligns with nominal $\alpha$.
+
+---
+
+## 5. Human-in-the-Loop (Approval Gates)
+
+Autonomous agents must never bypass human researchers at critical epistemological junctions:
+- **Gate 1 (`hypothesis-lock`)**: Before reading or processing `01_data/raw/`, the hypothesis matrix must be locked and signed by a researcher using `python .agents/skills/research-scientist/scripts/gate_check.py lock --gate hypothesis-lock --author "<Name>"`.
+- **Gate 2 (`model-specification`)**: Before running final inference or training production models, the statistical plan in `02_methodology/` must be locked.
+- **Gate 3 (`synthesis-approval`)**: Before generating publication-ready findings, the researcher must review the adversarial audit report and approve the conclusions.
+
+Any unapproved model execution will be flagged as an integrity violation in the provenance manifest.
