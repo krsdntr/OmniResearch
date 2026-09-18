@@ -1,0 +1,57 @@
+name: CI - Multi-Platform & Toolchain Verification
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-scripts:
+    name: Test Scripts on ${{ matrix.os }} (Python ${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run Toolchain Validator
+        run: |
+          python .agents/skills/research-scientist/scripts/validate_toolchains.py
+
+      - name: Test Project Scaffolding
+        run: |
+          python .agents/skills/research-scientist/scripts/scaffold_project.py test_sandbox
+
+      - name: Verify Scaffolding Structure
+        shell: bash
+        run: |
+          test -d test_sandbox/00_meta
+          test -d test_sandbox/01_data/raw
+          test -d test_sandbox/01_data/processed
+          test -d test_sandbox/02_methodology
+          test -d test_sandbox/03_src/python
+          test -d test_sandbox/05_artifacts/provenance
+          test -f test_sandbox/00_meta/hypothesis_matrix.md
+          echo "[OK] Directory hierarchy verified successfully."
+
+      - name: Test Provenance Recorder & Manifest Generation
+        run: |
+          python .agents/skills/research-scientist/scripts/record_provenance.py --artifact test_sandbox/05_artifacts/figures/test.pdf --script .agents/skills/research-scientist/scripts/scaffold_project.py --inputs README.md --manifest test_sandbox/05_artifacts/provenance/manifest.json
+
+      - name: Verify Manifest JSON Output
+        shell: bash
+        run: |
+          test -f test_sandbox/05_artifacts/provenance/manifest.json
+          cat test_sandbox/05_artifacts/provenance/manifest.json
+          echo "[OK] Provenance manifest verified successfully."

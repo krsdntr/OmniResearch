@@ -192,7 +192,12 @@ All utility scripts are written in pure Python 3 standard library (`pathlib`, `h
    ```bash
    python .agents/skills/research-scientist/scripts/validate_toolchains.py
    ```
-3. **Record Artifact Provenance**:
+3. **Lock Preregistration (Tamper-Proof Timestamp)**:
+   ```bash
+   python .agents/skills/research-scientist/scripts/record_provenance.py \
+     --lock-preregistration 00_meta/hypothesis_matrix.md
+   ```
+4. **Record Artifact Provenance**:
    ```bash
    python .agents/skills/research-scientist/scripts/record_provenance.py \
      --artifact 05_artifacts/figures/fig1.pdf \
@@ -200,3 +205,37 @@ All utility scripts are written in pure Python 3 standard library (`pathlib`, `h
      --inputs 01_data/processed/clean.parquet \
      --params '{"seed": 42, "ci": 0.95}'
    ```
+
+---
+
+## ⚡ Instant One-Liner Installation
+
+Install OmniResearch globally for **Google Antigravity** in one command:
+
+### Linux & macOS (Bash):
+```bash
+curl -fsSL https://raw.githubusercontent.com/krsdntr/OmniResearch/main/install.sh | bash
+```
+
+### Windows (PowerShell):
+```powershell
+irm https://raw.githubusercontent.com/krsdntr/OmniResearch/main/install.ps1 | iex
+```
+
+*To install inside the current directory only, append `--local` to the installer.*
+
+---
+
+## 🧪 Reference Implementations
+
+Explore our fully reproducible end-to-end examples in [`examples/`](file:///d:/kris/Research%20skill/examples/):
+- **[Clinical Dose-Response Study (KR-42)](file:///d:/kris/Research%20skill/examples/clinical_dose_response/README.md)**: A complete Phase II dose-escalation trial with locked hypotheses, raw trial data, 4PL analysis script, 95% confidence intervals, and verifiable provenance receipt.
+
+---
+
+## 📜 Community & License
+
+- **License**: [MIT License](file:///d:/kris/Research%20skill/LICENSE)
+- **Contributing**: [Contribution Guidelines](file:///d:/kris/Research%20skill/CONTRIBUTING.md)
+- **Code of Conduct**: [Scientific Ethics & Community Pledge](file:///d:/kris/Research%20skill/CODE_OF_CONDUCT.md)
+

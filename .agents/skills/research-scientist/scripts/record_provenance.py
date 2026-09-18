@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-OmniResearch Provenance Recorder
+OmniResearch Provenance & Integrity Recorder
 Zero-dependency CLI tool to compute SHA-256 checksums of input datasets, record script hashes,
-capture execution parameters, and update 05_artifacts/provenance/manifest.json.
+lock preregistered hypotheses, and maintain 05_artifacts/provenance/manifest.json.
 """
 
 import argparse
@@ -23,6 +23,36 @@ def compute_sha256(file_path: Path) -> str:
         while chunk := f.read(65536):
             sha256.update(chunk)
     return sha256.hexdigest()
+
+def lock_preregistration(hyp_file: str, receipt_file: str = "00_meta/preregistration_receipt.json"):
+    hyp_p = Path(hyp_file).resolve()
+    receipt_p = Path(receipt_file).resolve()
+
+    if not hyp_p.exists():
+        print(f"[ERROR] Hypothesis file not found: {hyp_file}")
+        sys.exit(1)
+
+    hyp_hash = compute_sha256(hyp_p)
+    receipt_data = {
+        "status": "LOCKED_PRE_ANALYSIS",
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "hypothesis_file": str(hyp_p.name),
+        "hypothesis_sha256": hyp_hash,
+        "tamper_proof_guideline": "Do not modify 00_meta/hypothesis_matrix.md after locking without logging an amendment.",
+        "environment": {
+            "os": platform.system(),
+            "python_version": platform.python_version()
+        }
+    }
+
+    receipt_p.parent.mkdir(parents=True, exist_ok=True)
+    with open(receipt_p, "w", encoding="utf-8") as f:
+        json.dump(receipt_data, f, indent=2)
+
+    print(f"[OK] Preregistration locked successfully!")
+    print(f"     Target: {hyp_p.name}")
+    print(f"     SHA-256: {hyp_hash}")
+    print(f"     Receipt: {receipt_p.as_posix()}")
 
 def record_provenance(
     artifact_path: str,
@@ -87,14 +117,23 @@ def record_provenance(
         print(f"    Input: {inp['path']} (SHA: {inp['sha256'][:12]}...)")
 
 def main():
-    parser = argparse.ArgumentParser(description="Record artifact provenance receipt.")
-    parser.add_argument("--artifact", required=True, help="Path to generated figure, table, or output artifact")
-    parser.add_argument("--script", required=True, help="Path to the source script that created the artifact")
+    parser = argparse.ArgumentParser(description="Record artifact provenance or lock preregistered hypotheses.")
+    parser.add_argument("--lock-preregistration", metavar="HYPOTHESIS_FILE", help="Lock hypothesis matrix before empirical runs")
+    parser.add_argument("--receipt", default="00_meta/preregistration_receipt.json", help="Receipt output for locked preregistration")
+    parser.add_argument("--artifact", help="Path to generated figure, table, or output artifact")
+    parser.add_argument("--script", help="Path to the source script that created the artifact")
     parser.add_argument("--inputs", nargs="+", default=[], help="Paths to input dataset(s) used")
     parser.add_argument("--params", default="{}", help="JSON string of parameters/hyperparameters")
     parser.add_argument("--manifest", default="05_artifacts/provenance/manifest.json", help="Manifest output path")
 
     args = parser.parse_args()
+
+    if args.lock_preregistration:
+        lock_preregistration(args.lock_preregistration, args.receipt)
+        return
+
+    if not args.artifact or not args.script:
+        parser.error("Both --artifact and --script are required when recording artifact provenance.")
 
     try:
         params_dict = json.loads(args.params)
